@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 1. Google Sheets API Configuration (REPLACE WITH YOUR ACTUAL VALUES)
     const API_KEY = 'https://script.google.com/macros/s/AKfycbxGdntR1eTtD2UTgUQgPGLpSz8TNQ3fqL5_w5d_DHLkIMLPWVcTZJEfPkCq01pM_L7P/exec'; // <--- IMPORTANT: Get this from Google Cloud Console
     const SPREADSHEET_ID = '1e9wzWOXVaGBh5MT7kl8WFotWfl74CzzeZTNhvLEnwGs'; // <--- IMPORTANT: Get this from your Google Sheet URL
-    const SHEET_NAME_OR_RANGE = 'Sheet1!A:Z'; // <--- IMPORTANT: Adjust to your sheet name and desired range (e.g., 'Sheet1!A:G' if you only have 7 columns)
+    const SHEET_NAME_OR_RANGE = 'Sheet1!A:E'; // <--- IMPORTANT: Adjust to your sheet name and desired range (e.g., 'Sheet1!A:G' if you only have 7 columns)
 
     // Make sure this matches a column header in your Google Sheet
     const CATEGORY_COLUMN_NAME = 'Category'; // <--- IMPORTANT: Adjust this to your actual category column name!
