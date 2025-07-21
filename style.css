@@ -1,141 +1,233 @@
+/* General Body and Container Styles */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
-    padding: 20px;
-    background-color: #f4f7f6; /* Light background */
-    color: #333;
+    padding: 0; /* Remove default body padding */
+    background-color: #eef2f6; /* Soft blue-gray background */
+    color: #34495e; /* Darker text for readability */
     line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .container {
-    max-width: 1000px;
-    margin: 30px auto;
+    max-width: 1200px; /* Wider container for more data */
+    margin: 40px auto; /* More vertical margin */
     background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 35px 40px; /* Increased padding */
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
 }
 
+/* Header Styles */
 h1 {
     text-align: center;
     color: #2c3e50;
-    margin-bottom: 30px;
-    font-size: 2.5em;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 15px;
+    margin-bottom: 35px; /* More space below heading */
+    font-size: 2.8em; /* Slightly larger heading */
+    font-weight: 700; /* Bolder */
+    position: relative;
+    padding-bottom: 20px;
 }
 
-/* Category Filter Styles */
+h1::after { /* Underline effect for H1 */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: #4CAF50; /* Accent color */
+    border-radius: 2px;
+}
+
+/* Filter Container Styles */
 .filter-container {
-    text-align: center;
-    margin-bottom: 25px;
-    padding: 15px;
-    background-color: #eaf1f8;
-    border-radius: 8px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center filter elements */
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f8fcfb; /* Very light green-blue tint */
+    border: 1px solid #e0e6ea;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .filter-container label {
-    font-weight: bold;
-    color: #444;
-    margin-right: 10px;
+    font-weight: 600; /* Slightly bolder label */
+    color: #555;
+    margin-right: 15px;
+    font-size: 1.05em;
 }
 
 .filter-container select {
-    padding: 10px 15px;
+    padding: 12px 20px; /* Larger padding for easier click */
     border: 1px solid #c9d8e7;
-    border-radius: 5px;
+    border-radius: 8px; /* More rounded dropdown */
     background-color: #fff;
-    font-size: 1em;
+    font-size: 1.0em;
     cursor: pointer;
     outline: none;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease; /* Smooth transitions */
+    appearance: none; /* Remove default select arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2C197.3L159.2%2C69.5c-3.1-3.1-8.2-3.1-11.3%2C0L5.4%2C197.3c-3.1%2C3.1-3.1%2C8.2%2C0%2C11.3s8.2%2C3.1%2C11.3%2C0l140-140l140%2C140c3.1%2C3.1%2C8.2%2C3.1%2C11.3%2C0S290.1%2C200.4%2C287%2C197.3z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
 }
 
 .filter-container select:hover,
 .filter-container select:focus {
-    border-color: #6a9bd8;
+    border-color: #4CAF50; /* Accent color on hover/focus */
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); /* Soft glow */
+}
+
+/* Table Responsive Container (for horizontal scroll) */
+.table-responsive {
+    overflow-x: auto; /* Allows horizontal scrolling for large tables */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    border-radius: 10px; /* Inherit border-radius from table */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* Shadow for the table container */
 }
 
 /* Table Styles */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border-radius: 8px; /* Rounded corners for the table */
-    overflow: hidden; /* Ensures rounded corners apply to content */
+    margin-top: 0; /* Remove top margin as it's in .table-responsive */
+    background-color: #ffffff;
+    min-width: 600px; /* Ensure table doesn't shrink too much */
 }
 
 th, td {
-    border: 1px solid #e0e0e0;
-    padding: 12px 15px;
+    border: 1px solid #ebf2f5; /* Lighter border for a cleaner look */
+    padding: 14px 18px; /* Increased padding */
     text-align: left;
     font-size: 0.95em;
-    color: #444;
+    color: #34495e;
 }
 
 th {
-    background-color: #4a90e2; /* Header background */
-    color: #ffffff; /* Header text color */
-    font-weight: bold;
+    background-color: #2b7a78; /* Deep teal for headers */
+    color: #ffffff;
+    font-weight: 600; /* Slightly less bold than H1 */
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    position: sticky; /* Make headers stick when scrolling */
-    top: 0; /* Stick to the top */
-    z-index: 1; /* Ensure headers are above content */
+    letter-spacing: 0.04em;
+    white-space: nowrap; /* Prevent headers from wrapping */
+    position: sticky;
+    top: 0;
+    z-index: 2; /* Ensure headers are above content when scrolling */
 }
 
 /* Zebra striping for rows */
 tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f7fcfb; /* Very light alternating row color */
 }
 
 tbody tr:hover {
-    background-color: #eef5fc; /* Highlight row on hover */
+    background-color: #e1f0e7; /* Accent highlight on hover */
     cursor: pointer;
+    transform: scale(1.005); /* Slight grow effect on hover */
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-/* Responsive Table (Optional but good practice) */
+/* No data message */
+.no-data-message {
+    text-align: center;
+    padding: 30px;
+    font-size: 1.2em;
+    color: #666;
+    background-color: #fdfde6;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: none; /* Hidden by default, shown by JS */
+}
+
+/* Responsive Table (Card View on Small Screens) */
 @media screen and (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-
-    thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    tr {
-        margin-bottom: 15px;
-        border: 1px solid #e0e0e0;
+    .container {
+        margin: 20px auto;
+        padding: 20px;
         border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+        font-size: 2em;
+        margin-bottom: 25px;
+    }
+
+    h1::after {
+        width: 60px;
+        height: 3px;
+    }
+
+    .filter-container {
+        flex-direction: column; /* Stack filter elements vertically */
+        align-items: stretch;
+        padding: 15px;
+        margin-bottom: 25px;
+    }
+
+    .filter-container label {
+        margin-right: 0;
+        margin-bottom: 10px; /* Space between label and select */
+        text-align: left;
+    }
+
+    .filter-container select {
+        width: 100%; /* Full width dropdown */
+    }
+
+    /* Transform table into a card-like display */
+    table {
+        border-collapse: separate; /* Allows border-radius on rows */
+        border-spacing: 0 10px; /* Space between "cards" */
+        background-color: transparent; /* Remove table background */
+        box-shadow: none; /* Remove table shadow */
+    }
+
+    thead {
+        display: none; /* Hide table header */
+    }
+
+    tbody tr {
+        display: block;
+        margin-bottom: 15px; /* Space between card-rows */
+        border: 1px solid #e0e6ea;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background-color: #ffffff;
+        padding: 15px;
     }
 
     td {
+        display: flex; /* Arrange label and value side-by-side */
+        justify-content: space-between; /* Push label left, value right */
         border: none;
-        border-bottom: 1px solid #e0e0e0;
-        position: relative;
-        padding-left: 50%;
+        padding: 8px 0; /* Vertical padding */
         text-align: right;
+        font-size: 1em;
     }
 
-    td:before {
-        position: absolute;
-        top: 0;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
+    td:last-child {
+        border-bottom: none; /* No bottom border on last item in card */
+    }
+
+    td::before {
+        content: attr(data-label); /* Use data-label for the field name */
+        font-weight: 600;
+        color: #555;
         text-align: left;
-        font-weight: bold;
-        color: #666;
+        flex-basis: 45%; /* Give label space */
+        flex-shrink: 0; /* Prevent label from shrinking */
+        padding-right: 10px;
     }
 
-    /* Assign data-label to each td in script.js for this to work */
-    /* Example: td:nth-of-type(1):before { content: "Header 1"; } */
-    /* This part requires dynamic generation in JS or hardcoding based on your columns */
+    /* Override hover for mobile cards */
+    tbody tr:hover {
+        background-color: #ffffff; /* Keep original background */
+        transform: none; /* No scaling */
+    }
 }
