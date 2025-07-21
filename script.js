@@ -1,64 +1,46 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. Google Sheets API Configuration (REPLACE WITH YOUR ACTUAL VALUES)
-    const API_KEY = 'https://script.google.com/macros/s/AKfycbxGdntR1eTtD2UTgUQgPGLpSz8TNQ3fqL5_w5d_DHLkIMLPWVcTZJEfPkCq01pM_L7P/exec'; // <--- IMPORTANT: Get this from Google Cloud Console
-    const SPREADSHEET_ID = '1e9wzWOXVaGBh5MT7kl8WFotWfl74CzzeZTNhvLEnwGs'; // <--- IMPORTANT: Get this from your Google Sheet URL
-    const SHEET_NAME_OR_RANGE = 'Sheet1!A:E'; // <--- IMPORTANT: Adjust to your sheet name and desired range (e.g., 'Sheet1!A:G' if you only have 7 columns)
+    // Replace with your Apps Script Web App URL
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbxGdntR1eTtD2UTgUQgPGLpSz8TNQ3fqL5_w5d_DHLkIMLPWVcTZJEfPkCq01pM_L7P/exec'; // <--- VERIFY THIS IS YOUR LATEST, ACTIVE APPS SCRIPT URL!
 
-    // Make sure this matches a column header in your Google Sheet
+    // Make sure this matches a column header in your Google Sheet (case-sensitive)
     const CATEGORY_COLUMN_NAME = 'Category'; // <--- IMPORTANT: Adjust this to your actual category column name!
 
     let allData = []; // To store the original fetched data
-    const noDataMessage = document.getElementById('noDataMessage');
+    const noDataMessage = document.getElementById('noDataMessage'); // Get the no data message element
 
-    // Function to fetch data from Google Sheets API
-    async function fetchData() {
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME_OR_RANGE}?key=${API_KEY}`;
+    // --- Start of Mobile Column Prioritization (Optional) ---
+    // Define which columns are most important to display on mobile cards.
+    // If a column isn't listed here, it won't be displayed on mobile (but will on desktop).
+    // Ensure these names EXACTLY match your Google Sheet headers.
+    const MOBILE_VISIBLE_COLUMNS = ['Category', 'Name', 'Description', 'Value']; // ADJUST THIS LIST!
+    // --- End of Mobile Column Prioritization ---
 
-        try {
-            const response = await fetch(url);
+    fetch(apiUrl)
+        .then(response => {
             if (!response.ok) {
-                // Check for specific error messages (e.g., 403 Forbidden for API key issues or sheet access)
-                const errorData = await response.json();
-                console.error('Error fetching data from Google Sheets API:', errorData);
-                throw new Error(`HTTP error! status: ${response.status} - ${errorData.error.message || 'Unknown error'}`);
-            }
-            const data = await response.json();
-
-            // The Google Sheets API returns data as an array of arrays (rows)
-            // The first array is typically the headers. We need to convert this to an array of objects.
-            if (!data.values || data.values.length === 0) {
-                return [];
-            }
-
-            const headers = data.values[0];
-            const rows = data.values.slice(1); // Get all rows excluding the header
-
-            const formattedData = rows.map(row => {
-                const obj = {};
-                headers.forEach((header, index) => {
-                    obj[header] = row[index] || ''; // Map values to their respective headers
+                // If the response is not OK (e.g., 400, 404, 500), throw an error
+                // Attempt to read error message from response if available
+                return response.text().then(text => { // Get response as text to see if it's an error message
+                    try {
+                        const json = JSON.parse(text);
+                        throw new Error(`HTTP error! status: ${response.status} - ${json.error || text}`);
+                    } catch (e) {
+                        throw new Error(`HTTP error! status: ${response.status} - ${text}`);
+                    }
                 });
-                return obj;
-            });
-            return formattedData;
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            // Display a user-friendly error message if data fetching fails
-            tableBody.innerHTML = '<tr><td colspan="100%" style="text-align: center; color: red;">Failed to load data. Please check console for errors.</td></tr>';
-            noDataMessage.textContent = 'Failed to load data. Please check the API key, spreadsheet ID, sheet name, and sharing settings of your Google Sheet.';
-            noDataMessage.style.display = 'block';
-            return [];
-        }
-    }
-
-    // Main execution
-    fetchData().then(data => {
-        allData = data; // Store all data for filtering
-        populateTable(allData); // Initial table population
-        populateCategories(allData); // Populate filter dropdown
-    });
-
+            }
+            return response.json();
+        })
+        .then(data => {
+            allData = data; // Store all data for filtering
+            populateTable(allData); // Initial table population
+            populateCategories(allData); // Populate filter dropdown
+        })
+        .catch(error => {
+            console.error('Error fetching data from Apps Script:', error);
+            noDataMessage.textContent = `Failed to load data: ${error.message || 'Unknown error. Check Apps Script deployment and console for details.'}`;
+            noDataMessage.style.display = 'block'; // Show error message to user
+        });
 
     // Function to populate the table
     function populateTable(dataToDisplay) {
@@ -70,14 +52,21 @@ document.addEventListener('DOMContentLoaded', function() {
         noDataMessage.style.display = 'none'; // Hide no data message by default
 
         if (dataToDisplay.length === 0) {
-            noDataMessage.textContent = 'No data found for the selected category. Please try a different filter.'; // Reset message
+            noDataMessage.textContent = 'No data found for the selected category.'; // Reset message
             noDataMessage.style.display = 'block'; // Show no data message
             return;
         }
 
         // Dynamically create headers based on the first object's keys
-        const headers = Object.keys(dataToDisplay[0]);
-        headers.forEach(key => {
+        const allHeaders = Object.keys(dataToDisplay[0]);
+        let headersToDisplay = allHeaders;
+
+        // Apply mobile column filtering for headers if on small screen
+        if (window.innerWidth <= 768) {
+            headersToDisplay = MOBILE_VISIBLE_COLUMNS.filter(col => allHeaders.includes(col));
+        }
+
+        headersToDisplay.forEach(key => { // Use headersToDisplay for TH
             const th = document.createElement('th');
             th.textContent = key;
             tableHeadRow.appendChild(th);
@@ -86,17 +75,23 @@ document.addEventListener('DOMContentLoaded', function() {
         // Populate table rows
         dataToDisplay.forEach(rowData => {
             const tr = document.createElement('tr');
-            headers.forEach(key => { // Iterate over headers to ensure consistent column order
+            allHeaders.forEach(key => { // IMPORTANT: Iterate over ALL headers to create TDs for data-label
                 const td = document.createElement('td');
-                td.textContent = rowData[key];
+                td.textContent = rowData[key] || ''; // Use empty string for undefined values
                 td.setAttribute('data-label', key); // IMPORTANT for responsive card view CSS
+                
+                // If we are on mobile AND this column is NOT in MOBILE_VISIBLE_COLUMNS, hide it
+                if (window.innerWidth <= 768 && !MOBILE_VISIBLE_COLUMNS.includes(key)) {
+                    td.style.display = 'none'; // Directly hide this td for mobile if not in visible list
+                }
+
                 tr.appendChild(td);
             });
             tableBody.appendChild(tr);
         });
     }
 
-    // Function to populate the category filter dropdown (same as before)
+    // Function to populate the category filter dropdown
     function populateCategories(data) {
         const categoryFilter = document.getElementById('categoryFilter');
         const categories = new Set(); // Use Set to get unique categories
@@ -105,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         categoryFilter.innerHTML = '<option value="all">All Categories</option>';
 
         data.forEach(item => {
-            if (item[CATEGORY_COLUMN_NAME]) {
+            if (item[CATEGORY_COLUMN_NAME]) { // Check if the category column exists for the item
                 categories.add(item[CATEGORY_COLUMN_NAME]);
             }
         });
