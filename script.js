@@ -8,12 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let allData = []; // To store the original fetched data
     const noDataMessage = document.getElementById('noDataMessage'); // Get the no data message element
 
-    // --- Start of Mobile Column Prioritization (Optional) ---
-    // Define which columns are most important to display on mobile cards.
-    // If a column isn't listed here, it won't be displayed on mobile (but will on desktop).
-    // Ensure these names EXACTLY match your Google Sheet headers.
-    const MOBILE_VISIBLE_COLUMNS = ['Category', 'Name']; // ADJUST THIS LIST!
-    // --- End of Mobile Column Prioritization ---
 
     fetch(apiUrl)
         .then(response => {
