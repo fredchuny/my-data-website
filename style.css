@@ -1,17 +1,141 @@
 body {
-    font-family: sans-serif;
-    margin: 20px;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f6; /* Light background */
+    color: #333;
+    line-height: 1.6;
 }
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+/* Category Filter Styles */
+.filter-container {
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #eaf1f8;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.filter-container label {
+    font-weight: bold;
+    color: #444;
+    margin-right: 10px;
+}
+
+.filter-container select {
+    padding: 10px 15px;
+    border: 1px solid #c9d8e7;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.filter-container select:hover,
+.filter-container select:focus {
+    border-color: #6a9bd8;
+}
+
+/* Table Styles */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px; /* Rounded corners for the table */
+    overflow: hidden; /* Ensures rounded corners apply to content */
 }
+
 th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px;
     text-align: left;
+    font-size: 0.95em;
+    color: #444;
 }
+
 th {
-    background-color: #f2f2f2;
+    background-color: #4a90e2; /* Header background */
+    color: #ffffff; /* Header text color */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: sticky; /* Make headers stick when scrolling */
+    top: 0; /* Stick to the top */
+    z-index: 1; /* Ensure headers are above content */
+}
+
+/* Zebra striping for rows */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #eef5fc; /* Highlight row on hover */
+    cursor: pointer;
+}
+
+/* Responsive Table (Optional but good practice) */
+@media screen and (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        margin-bottom: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #e0e0e0;
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+    }
+
+    td:before {
+        position: absolute;
+        top: 0;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #666;
+    }
+
+    /* Assign data-label to each td in script.js for this to work */
+    /* Example: td:nth-of-type(1):before { content: "Header 1"; } */
+    /* This part requires dynamic generation in JS or hardcoding based on your columns */
 }
