@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sheet Data</title>
+    <title>Google Sheet Data Viewer</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Data from Google Sheet</h1>
-    <table id="dataTable">
-        <thead>
-            <tr>
-                <th>Column 1</th>
-                <th>Column 2</th>
-                </tr>
-        </thead>
-        <tbody>
-            </tbody>
-    </table>
+    <div class="container">
+        <h1>Data from Google Sheet</h1>
+
+        <div class="filter-container">
+            <label for="categoryFilter">Filter by Category:</label>
+            <select id="categoryFilter">
+                <option value="all">All Categories</option>
+                </select>
+        </div>
+
+        <div class="table-responsive">
+             <table id="dataTable">
+                <thead>
+                    <tr>
+                        </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
